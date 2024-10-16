@@ -13,6 +13,7 @@ public record AvengerRequestDto(
 
     public static Avenger toAvenger(AvengerRequestDto req) {
         return new Avenger(
+                null,
                 req.nick,
                 req.person,
                 req.description,

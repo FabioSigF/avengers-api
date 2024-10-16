@@ -32,7 +32,7 @@ public class AvengerResource {
         return ResponseEntity.ok().body(avengersList.stream().map(AvengerResponseDto::convertToAvengerResponse).toList());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/detail")
     public ResponseEntity<AvengerResponseDto> getAvengerDetailsById(@PathVariable Long id) {
         Avenger avenger = avengerRepository.getDetail(id);
         return ResponseEntity.ok().body(AvengerResponseDto.convertToAvengerResponse(avenger));
