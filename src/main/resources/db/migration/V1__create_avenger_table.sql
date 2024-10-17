@@ -3,7 +3,7 @@ CREATE TABLE avenger (
     nick VARCHAR(36),
     person VARCHAR(128),
     description VARCHAR(128),
-    history text
+    history text,
     PRIMARY KEY (id)
 );
 
