@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "avenger")
 public class AvengerEntity {
 
     @Id
@@ -23,7 +24,7 @@ public class AvengerEntity {
 
     @Column(nullable = false)
     private String person;
-    private String descripton;
+    private String description;
     private String history;
 
     public static Avenger toAvenger(AvengerEntity avenger) {
@@ -31,7 +32,7 @@ public class AvengerEntity {
                 avenger.id,
                 avenger.nick,
                 avenger.person,
-                avenger.descripton,
+                avenger.description,
                 avenger.history);
     }
 

@@ -15,10 +15,10 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/avenger")
+@RequestMapping("/api")
 public class AvengerResource {
 
-    private static final String API_PATH = "/avenger";
+    private static final String API_PATH = "/api";
 
     private final AvengerRepository avengerRepository;
 
