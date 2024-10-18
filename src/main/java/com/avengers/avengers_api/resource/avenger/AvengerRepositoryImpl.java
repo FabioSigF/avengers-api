@@ -2,6 +2,7 @@ package com.avengers.avengers_api.resource.avenger;
 
 import com.avengers.avengers_api.domain.avenger.Avenger;
 import com.avengers.avengers_api.domain.avenger.AvengerRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -41,7 +42,22 @@ public class AvengerRepositoryImpl implements AvengerRepository {
 
     @Override
     public Avenger update(Avenger avenger) {
-        AvengerEntity savedAvenger = repository.save(AvengerEntity.toAvengerEntity(avenger));
+        AvengerEntity existingAvengerEntity = repository.findById(avenger.id())
+                .orElseThrow(() -> new EntityNotFoundException("Avenger not found"));
+
+        existingAvengerEntity.setNick(avenger.nick());
+        existingAvengerEntity.setPerson(avenger.person());
+        existingAvengerEntity.setDescription(avenger.description());
+        existingAvengerEntity.setHistory(avenger.history());
+        
+        AvengerEntity savedAvenger = repository.save(existingAvengerEntity);
         return AvengerEntity.toAvenger(savedAvenger);
+    }
+
+    @Override
+    public Avenger getByNick(String nick) {
+        AvengerEntity avenger = repository.findByNick(nick)
+                .orElseThrow(() -> new IllegalArgumentException("Não foi encontrado nenhum avenger"));
+        return AvengerEntity.toAvenger(avenger);
     }
 }

@@ -8,4 +8,5 @@ public interface AvengerRepository {
     Avenger create(Avenger avenger);
     void delete(Long id);
     Avenger update(Avenger avenger);
+    Avenger getByNick(String nick);
 }

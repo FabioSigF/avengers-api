@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -48,13 +49,24 @@ public class AvengerResource {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Avenger> updateAvenger(@Valid @PathVariable Long id, @RequestBody AvengerRequestDto req) {
-        Avenger updatedAvenger = new Avenger(id, req.nick(), req.person(), req.description(), req.history());
+    public ResponseEntity<Avenger> updateAvenger(@PathVariable Long id, @RequestBody @Valid AvengerRequestDto req) {
+        Avenger avenger = avengerRepository.getDetail(id);
+        if (avenger == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
 
+        Avenger existingAvenger = avengerRepository.getByNick(req.nick());
+        if (existingAvenger != null && !existingAvenger.id().equals(id)) {
+            // Retorna erro 409 (Conflito) se o 'nick' já estiver sendo usado por outro Avenger
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        }
+
+        Avenger updatedAvenger = new Avenger(avenger.id(), req.nick(), req.person(), req.description(), req.history());
         avengerRepository.update(updatedAvenger);
 
         return ResponseEntity.ok().body(updatedAvenger);
     }
+
 
     @DeleteMapping("/{id}")
     public void deleteAvenger(@PathVariable Long id) {
